@@ -11,7 +11,7 @@ interface TextProps {
  */
 const Text = styled.span<TextProps>`
   ${({ variant = 'body1' }) => typographyStyle(variant)};
-  ${({ color = colors.text.primary }) => color}
+  color: ${({ color }) => color ?? colors.text.primary};
 `;
 
 export default Text;

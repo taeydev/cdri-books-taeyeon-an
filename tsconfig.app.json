@@ -21,7 +21,8 @@
       "@pages/*": ["pages/*"],
       "@components/*": ["components/*"],
       "@layouts/*": ["layouts/*"],
-      "@styles/*": ["styles/*"]
+      "@styles/*": ["styles/*"],
+      "@models/*": ["models/*"]
     },
 
     /* Linting */

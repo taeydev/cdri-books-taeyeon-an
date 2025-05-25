@@ -20,9 +20,11 @@ interface ButtonProps {
  */
 const Button = styled.button<ButtonProps>(
   {
+    fontFamily: 'inherit',
     cursor: 'pointer',
     border: 'none',
     borderRadius: '8px',
+    padding: 0,
   },
   ({ variant = 'primary' }) => buttonColorMap[variant],
   ({ size = 'medium' }) => buttonSizeMap[size],
