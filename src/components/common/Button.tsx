@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import { css, type SerializedStyles } from '@emotion/react';
 import styled from '@emotion/styled';
 import {
   buttonColorMap,
@@ -12,6 +12,7 @@ interface ButtonProps {
   size?: ButtonSize;
   full?: boolean;
   disabled?: boolean;
+  css?: SerializedStyles;
 }
 
 /**
@@ -20,7 +21,6 @@ interface ButtonProps {
 const Button = styled.button<ButtonProps>(
   {
     cursor: 'pointer',
-    fontWeight: 'bold',
     border: 'none',
     borderRadius: '8px',
   },
@@ -39,7 +39,8 @@ const Button = styled.button<ButtonProps>(
           opacity: 0.3;
           cursor: initial;
         `
-      : undefined
+      : undefined,
+  ({ css: customCss }) => customCss
 );
 
 export default Button;

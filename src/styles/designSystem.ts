@@ -8,6 +8,7 @@ export const typographyMap = {
   body2: { size: '14px', weight: 500, lineHeight: '14px' },
   body2Bold: { size: '14px', weight: 700, lineHeight: '14px' },
   caption: { size: '16px', weight: 500, lineHeight: '16px' },
+  captionMedium: { size: '14px', weight: 500, lineHeight: '16px' },
   small: { size: '10px', weight: 500, lineHeight: '10px' },
 };
 
@@ -25,6 +26,7 @@ export const colors = {
   ui: {
     surface: '#f2f4f6',
     border: '#dadada',
+    borderStrong: '#dad6da',
   },
   white: '#ffffff',
   black: '#222222',
