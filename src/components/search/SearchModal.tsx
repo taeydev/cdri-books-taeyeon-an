@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import closeIcon from '@/assets/icons/ic_close.svg';
+import closeIcon from '@assets/icons/ic_close.svg';
 import Button from '@components/common/Button/Button';
 import ImageButton from '@components/common/Button/ImageButton';
 import Dropdown from '@components/common/Dropdown/Dropdown';

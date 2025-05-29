@@ -5,7 +5,7 @@ export const PageContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  padding: 80px 0;
+  padding: 80px 0 30px 0;
 `;
 
 export const ContentWrapper = styled.div`

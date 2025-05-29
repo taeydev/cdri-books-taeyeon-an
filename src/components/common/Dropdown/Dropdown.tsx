@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { SerializedStyles } from '@emotion/react';
-import arrowDownIcon from '@/assets/icons/ic_arrow_down.svg';
-import arrowUpIcon from '@/assets/icons/ic_arrow_up.svg';
+import arrowDownIcon from '@assets/icons/ic_arrow_down.svg';
+import arrowUpIcon from '@assets/icons/ic_arrow_up.svg';
 import Image from '@components/common/Image/Image';
 import Text from '@components/common/Text/Text';
 import { Button, DropdownWrapper, OptionList, Option } from './Dropdown.styles';
@@ -23,6 +23,7 @@ interface DropdownProps {
  */
 const Dropdown = ({ options, selected, onSelect, css }: DropdownProps) => {
   const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => setOpen((prev) => !prev);
 
@@ -31,11 +32,32 @@ const Dropdown = ({ options, selected, onSelect, css }: DropdownProps) => {
     setOpen(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [open]);
+
   const selectedLabel =
     options.find((option) => option.value === selected)?.label || '';
 
   return (
-    <DropdownWrapper customCss={css}>
+    <DropdownWrapper ref={containerRef} customCss={css}>
       <Button onClick={toggleDropdown}>
         <Text variant="body2Bold">{selectedLabel}</Text>
         <Image

@@ -1,7 +1,7 @@
 import React from 'react';
-import deleteIcon from '@/assets/icons/ic_delete.svg';
+import deleteIcon from '@assets/icons/ic_delete.svg';
 import ImageButton from '@components/common/Button/ImageButton';
-import { Dropdown, DropdownItem } from './SearchBarHistoryDropdown.styles';
+import { Dropdown, DropdownItem } from './SearchHistoryDropdown.styles';
 
 interface SearchHistoryDropdown {
   searchHistory: string[];

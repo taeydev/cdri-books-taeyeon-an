@@ -4,10 +4,10 @@ import Text from '@components/common/Text/Text';
 import { colors } from '@styles/designSystem';
 import { useWishlistStore } from '@store/useWishlistStore';
 import type { Book } from 'models/Book';
-import arrowUpIcon from '@/assets/icons/ic_arrow_up.svg';
-import arrowDownIcon from '@/assets/icons/ic_arrow_down.svg';
-import likeIcon from '@/assets/icons/ic_like.svg';
-import likeFilledIcon from '@/assets/icons/ic_like_fill.svg';
+import arrowUpIcon from '@assets/icons/ic_arrow_up.svg';
+import arrowDownIcon from '@assets/icons/ic_arrow_down.svg';
+import likeIcon from '@assets/icons/ic_like.svg';
+import likeFilledIcon from '@assets/icons/ic_like_fill.svg';
 import {
   AccordionContentWrapper,
   AccordionWrapper,

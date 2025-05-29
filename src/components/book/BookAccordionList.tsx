@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import type { Book } from '@models/Book';
 import BookAccordionItem from '@components/book/BookAccordionItem';
 import { useWishlistStore } from '@store/useWishlistStore';
+import { ListWrapper } from './BookAccordionList.styles';
 
 interface BookAccordionListProps {
   books: Book[];
@@ -27,7 +28,7 @@ const BookAccordionList = ({ books }: BookAccordionListProps) => {
   );
 
   return (
-    <>
+    <ListWrapper>
       {books.map((item, idx) => (
         <BookAccordionItem
           key={`${idx}_${item.isbn}`}
@@ -35,7 +36,7 @@ const BookAccordionList = ({ books }: BookAccordionListProps) => {
           onClickWish={toggleWish}
         />
       ))}
-    </>
+    </ListWrapper>
   );
 };
 

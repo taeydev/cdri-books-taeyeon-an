@@ -25,7 +25,8 @@
       "@models/*": ["models/*"],
       "@api/*": ["api/*"],
       "@hooks/*": ["hooks/*"],
-      "@store/*": ["store/*"]
+      "@store/*": ["store/*"],
+      "@assets/*": ["assets/*"]
     },
 
     /* Linting */

@@ -1,5 +1,5 @@
 import Image from '@components/common/Image/Image';
-import bookIcon from '@/assets/icons/ic_book.svg';
+import bookIcon from '@assets/icons/ic_book.svg';
 import ResultMessage from './ResultMessage';
 
 interface NoResultProps {
