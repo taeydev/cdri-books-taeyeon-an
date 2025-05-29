@@ -60,13 +60,13 @@ export const Author = styled(Text)`
 `;
 
 export const Price = styled(Text)`
-  margin-left: 22px;
+  display: flex;
+  margin-left: auto;
   margin-right: 56px;
 `;
 
 export const ButtonArea = styled.div`
   display: flex;
-  margin-left: auto;
   margin-top: 10px;
   margin-bottom: 10px;
   gap: 8px;

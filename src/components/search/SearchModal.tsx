@@ -56,7 +56,7 @@ const Input = styled.input`
   }
 `;
 
-export type FilterCategory = 'title' | 'authors' | 'publisher';
+export type FilterCategory = 'title' | 'person' | 'publisher';
 
 /**
  * 상세 검색 interface
@@ -81,7 +81,7 @@ const options = [
   },
   {
     label: '저자명',
-    value: 'authors',
+    value: 'person',
   },
   {
     label: '출판사',

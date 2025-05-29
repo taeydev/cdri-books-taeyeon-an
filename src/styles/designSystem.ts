@@ -3,9 +3,9 @@ import { css } from '@emotion/react';
 export const typographyMap = {
   title1: { size: '24px', weight: 700, lineHeight: '24px' },
   title2: { size: '22px', weight: 700, lineHeight: '24px' },
-  title3: { size: '18px', weight: 700, lineHeight: '18px' },
+  title3: { size: '18px', weight: 700, lineHeight: '22px' },
   body1: { size: '20px', weight: 500, lineHeight: '20px' },
-  body2: { size: '14px', weight: 500, lineHeight: '14px' },
+  body2: { size: '14px', weight: 500, lineHeight: '18px' },
   body2Bold: { size: '14px', weight: 700, lineHeight: '14px' },
   caption: { size: '16px', weight: 500, lineHeight: '16px' },
   captionMedium: { size: '14px', weight: 500, lineHeight: '16px' },
@@ -41,15 +41,24 @@ export const buttonColorMap = {
   primary: css`
     background-color: ${colors.primary};
     color: ${colors.white};
+    &:hover {
+      background-color: #4077e0; // 기존보다 조금 더 어두운 블루
+    }
   `,
   secondary: css`
     background-color: ${colors.ui.surface};
     color: ${colors.text.secondary};
+    &:hover {
+      background-color: #e6e8eb; // surface보다 약간 어두운 회색
+    }
   `,
   outline: css`
     background-color: ${colors.white};
     color: ${colors.text.tertiary};
     border: 1px solid ${colors.text.tertiary};
+    &:hover {
+      background-color: #f7f7f7; // 흰색보다 살짝 회색 느낌
+    }
   `,
 };
 

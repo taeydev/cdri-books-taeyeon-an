@@ -5,16 +5,21 @@ const BASE_URL = 'https://dapi.kakao.com/v3/search/book';
 
 const REST_API_KEY = import.meta.env.VITE_REST_API_KEY;
 
-export type Target = 'title' | 'authors' | 'publisher';
+export type Target = 'title' | 'person' | 'publisher';
 
 export interface SearchBooksResult {
   totalCount: number;
   books: Book[];
 }
 
-export const searchBooks = async (query: string, target?: Target) => {
+export const searchBooks = async (
+  query: string,
+  page: number,
+  target?: Target
+) => {
   const url = new URL(BASE_URL);
   url.searchParams.append('query', query);
+  url.searchParams.append('page', page.toString());
   if (target) url.searchParams.append('target', target);
 
   const res = await fetch(url.toString(), {

@@ -5,6 +5,8 @@ import { useWishlistStore } from '@store/useWishlistStore';
 import BookAccordionList from '@components/book/BookAccordionList';
 import { colors } from '@styles/designSystem';
 import NoResult from '@components/common/NoResult';
+import Paging from '@components/common/Paging';
+import { useState } from 'react';
 
 const PageContainer = styled.div`
   display: flex;
@@ -30,6 +32,12 @@ const StyledText = styled(Text)`
  */
 const WishListPage = () => {
   const { wishlist } = useWishlistStore();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const booksPerPage = 10;
+
+  const handleChangePage = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <PageContainer>
@@ -47,7 +55,19 @@ const WishListPage = () => {
         {wishlist.length === 0 ? (
           <NoResult message={'찜한 책이 없습니다.'} />
         ) : (
-          <BookAccordionList books={wishlist} />
+          <>
+            <BookAccordionList
+              books={wishlist.slice(
+                (currentPage - 1) * booksPerPage,
+                currentPage * booksPerPage
+              )}
+            />
+            <Paging
+              currentPage={currentPage}
+              totalPages={Math.ceil(wishlist.length / 10)}
+              onPageChange={handleChangePage}
+            />
+          </>
         )}
       </ContentWrapper>
     </PageContainer>

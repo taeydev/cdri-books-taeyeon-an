@@ -23,7 +23,7 @@ export const useWishlistStore = create<WishlistStore>((set, get) => ({
 
   addWishedBook: (book: Book) =>
     set((state) => {
-      const updatedWishlist = [...state.wishlist, book];
+      const updatedWishlist = [book, ...state.wishlist];
       localStorage.setItem(WISH_LIST_KEY, JSON.stringify(updatedWishlist));
       return { wishlist: updatedWishlist };
     }),

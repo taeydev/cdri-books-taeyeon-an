@@ -13,6 +13,8 @@ import type { Target } from '@api/bookApi';
 import { colors } from '@styles/designSystem';
 import NoResult from '@components/common/NoResult';
 import { useSearchHistoryStore } from '@store/useSearchHistoryStore';
+import Paging from '@components/common/Paging';
+import BookAccordionSkeletonList from '@components/book/BookAccordionSkeletonList';
 
 const PageContainer = styled.div`
   display: flex;
@@ -59,8 +61,26 @@ const SearchPage = () => {
     searchWord: '',
   });
 
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalCount, setTotalCount] = useState(0);
+
   // query 상태가 바뀌면 useBookSearch 호출됨
-  const { data, isLoading, error } = useBookSearch(query, target || undefined);
+  const { data, isLoading, error } = useBookSearch(
+    query,
+    currentPage,
+    target || undefined
+  );
+
+  // query나 target이 바뀌었을 때만 totalCount 갱신
+  useEffect(() => {
+    if (data?.totalCount !== undefined) {
+      setTotalCount(data.totalCount);
+    }
+  }, [data?.totalCount, query, target]);
+
+  const handleChangePage = (page: number) => {
+    setCurrentPage(page);
+  };
 
   const { history, addHistory, removeHistory } = useSearchHistoryStore();
 
@@ -75,6 +95,7 @@ const SearchPage = () => {
   };
 
   const handleSearch = () => {
+    setCurrentPage(1);
     setQuery(searchWord);
     addHistory(searchWord);
   };
@@ -82,7 +103,6 @@ const SearchPage = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
     setAdvancedFilter({ category: 'title', searchWord: '' }); // 초기화
-    setTarget('');
   };
 
   const toggleModal = () => {
@@ -94,6 +114,7 @@ const SearchPage = () => {
   };
 
   const handleSearchOnModal = () => {
+    setCurrentPage(1);
     setTarget(advancedFilter.category);
     setQuery(advancedFilter.searchWord);
     setSearchWord(''); // 초기화
@@ -164,15 +185,22 @@ const SearchPage = () => {
             <StyledText variant="caption">도서 검색 결과</StyledText>
             <Text variant="caption">총&nbsp;</Text>
             <Text variant="caption" color={colors.primary}>
-              {data?.totalCount ?? 0}
+              {totalCount}
             </Text>
             <Text variant="caption">건</Text>
           </InfoWrapper>
         </PageSection>
-        {isLoading && <p>검색 중...</p>}
+        {isLoading && <BookAccordionSkeletonList count={10} />}
         {error && <p>에러 발생: {error.message}</p>}
         {data && data.books.length > 0 ? (
-          <BookAccordionList books={data.books} />
+          <>
+            <BookAccordionList books={data.books} />
+            <Paging
+              currentPage={currentPage}
+              totalPages={Math.ceil((data?.totalCount ?? 0) / 10)}
+              onPageChange={handleChangePage}
+            />
+          </>
         ) : (
           <NoResult message={'검색된 결과가 없습니다.'} />
         )}
