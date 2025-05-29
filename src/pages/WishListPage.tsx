@@ -1,6 +1,10 @@
 import styled from '@emotion/styled';
 import Text from '@components/common/Text';
 import PageSection from '@layouts/PageSection';
+import { useWishlistStore } from '@store/useWishlistStore';
+import BookAccordionList from '@components/book/BookAccordionList';
+import { colors } from '@styles/designSystem';
+import NoResult from '@components/common/NoResult';
 
 const PageContainer = styled.div`
   display: flex;
@@ -13,16 +17,38 @@ const ContentWrapper = styled.div`
   width: 960px;
 `;
 
+const InfoWrapper = styled.div`
+  display: flex;
+`;
+
+const StyledText = styled(Text)`
+  margin-right: 16px;
+`;
+
 /**
  * 내가 찜한 책 페이지
  */
 const WishListPage = () => {
+  const { wishlist } = useWishlistStore();
+
   return (
     <PageContainer>
       <ContentWrapper>
         <PageSection title="내가 찜한 책">
-          <Text variant="caption">찜한 책</Text>
+          <InfoWrapper>
+            <StyledText variant="caption">찜한 책</StyledText>
+            <Text variant="caption">총&nbsp;</Text>
+            <Text variant="caption" color={colors.primary}>
+              {wishlist.length}
+            </Text>
+            <Text variant="caption">건</Text>
+          </InfoWrapper>
         </PageSection>
+        {wishlist.length === 0 ? (
+          <NoResult message={'찜한 책이 없습니다.'} />
+        ) : (
+          <BookAccordionList books={wishlist} />
+        )}
       </ContentWrapper>
     </PageContainer>
   );

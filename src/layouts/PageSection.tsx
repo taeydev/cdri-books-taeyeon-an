@@ -10,14 +10,16 @@ interface PageSectionProps {
 const Section = styled.section`
   display: flex;
   flex-direction: column;
+  margin-bottom: 36px;
+`;
+
+const PageTitle = styled(Text)`
+  margin: 0;
+  margin-bottom: 25px;
 `;
 
 const SubElementWrapper = styled.div`
-  margin-top: 25px;
-`;
-
-const ContentWrapper = styled.div`
-  margin-top: 25px;
+  margin-bottom: 25px;
 `;
 
 /**
@@ -26,11 +28,11 @@ const ContentWrapper = styled.div`
 const PageSection = ({ title, subElement, children }: PageSectionProps) => {
   return (
     <Section>
-      <Text as="h2" variant="title2">
+      <PageTitle as="h2" variant="title2">
         {title}
-      </Text>
+      </PageTitle>
       {subElement && <SubElementWrapper>{subElement}</SubElementWrapper>}
-      <ContentWrapper>{children}</ContentWrapper>
+      <div>{children}</div>
     </Section>
   );
 };

@@ -3,6 +3,9 @@ import { GlobalStyles } from '@styles/GlobalStyles';
 import SearchPage from '@pages/SearchPage';
 import WishListPage from '@pages/WishListPage';
 import AppLayout from '@layouts/AppLayout';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -22,10 +25,10 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <GlobalStyles />
       <RouterProvider router={router} />
-    </>
+    </QueryClientProvider>
   );
 }
 

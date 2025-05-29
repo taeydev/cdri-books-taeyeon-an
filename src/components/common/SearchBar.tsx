@@ -1,33 +1,15 @@
-import styled from '@emotion/styled';
-import { colors, typographyStyle } from '@styles/designSystem';
 import Image from '@components/common/Image';
+import deleteIcon from '@/assets/icons/ic_delete.svg';
 import searchIcon from '@/assets/icons/ic_search.svg';
-
-const SearchBarContainer = styled.div<{ width?: number }>`
-  display: flex;
-  align-items: center;
-  border-radius: 100px;
-  background-color: ${colors.ui.surface};
-  width: ${({ width }) => (width ? `${width}px` : '100%')};
-  padding: 10px;
-`;
-
-const Input = styled.input`
-  background-color: transparent;
-  border: none;
-  width: 100%;
-  margin-left: 11px;
-  padding: 0;
-  color: ${colors.text.primary};
-  ${typographyStyle('caption')};
-  &::placeholder {
-    ${typographyStyle('caption')};
-    color: ${colors.text.tertiary};
-  }
-  &:focus {
-    outline: none;
-  }
-`;
+import { useEffect, useRef, useState } from 'react';
+import {
+  Dropdown,
+  DropdownItem,
+  Input,
+  SearchBarContainer,
+  Wrapper,
+} from './SearchBar.styles';
+import ImageButton from './ImageButton';
 
 interface SearchBarProps {
   value: string;
@@ -35,33 +17,87 @@ interface SearchBarProps {
   onSearch: () => void;
   placeholder?: string;
   width?: number;
+  searchHistory?: string[];
+  onClickHistory?: (keyword: string) => void;
+  onDeleteHistory?: (keyword: string) => void;
 }
 
 /**
  * 검색바 컴포넌트
  */
-const SearchBar = ({
+export const SearchBar = ({
   value,
   onChange,
   onSearch,
   placeholder,
   width,
+  searchHistory = [],
+  onClickHistory,
+  onDeleteHistory,
 }: SearchBarProps) => {
+  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') onSearch();
+    if (e.key === 'Enter') {
+      onSearch();
+      setIsFocused(false);
+      inputRef.current?.blur();
+    }
   };
 
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setIsFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <SearchBarContainer width={width}>
-      <Image src={searchIcon} alt="search icon" width={30} height={30} />
-      <Input
-        type="text"
-        value={value}
-        onChange={onChange}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder}
-      />
-    </SearchBarContainer>
+    <Wrapper ref={containerRef} width={width}>
+      <SearchBarContainer isExpanded={isFocused}>
+        <Image src={searchIcon} alt="search icon" width={30} height={30} />
+        <Input
+          ref={inputRef}
+          type="text"
+          value={value}
+          onChange={onChange}
+          onKeyDown={handleKeyDown}
+          onFocus={() => setIsFocused(true)}
+          placeholder={placeholder}
+        />
+      </SearchBarContainer>
+      {isFocused && searchHistory.length > 0 && (
+        <Dropdown>
+          {searchHistory.map((item) => (
+            <DropdownItem key={item}>
+              <span
+                onClick={() => {
+                  onClickHistory?.(item);
+                  setIsFocused(false);
+                }}
+              >
+                {item}
+              </span>
+              <ImageButton
+                imgSrc={deleteIcon}
+                imgAlt={'delete icon'}
+                imgWidth={24}
+                imgHeight={24}
+                onClick={() => onDeleteHistory?.(item)}
+              />
+            </DropdownItem>
+          ))}
+        </Dropdown>
+      )}
+    </Wrapper>
   );
 };
 

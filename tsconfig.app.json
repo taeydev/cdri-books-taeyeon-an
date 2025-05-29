@@ -22,7 +22,10 @@
       "@components/*": ["components/*"],
       "@layouts/*": ["layouts/*"],
       "@styles/*": ["styles/*"],
-      "@models/*": ["models/*"]
+      "@models/*": ["models/*"],
+      "@api/*": ["api/*"],
+      "@hooks/*": ["hooks/*"],
+      "@store/*": ["store/*"]
     },
 
     /* Linting */

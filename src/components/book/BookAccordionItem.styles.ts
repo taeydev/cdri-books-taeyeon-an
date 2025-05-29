@@ -5,6 +5,7 @@ import Text from '@components/common/Text';
 import Image from '@components/common/Image';
 import ImageButton from '@components/common/ImageButton';
 import { colors, typographyStyle } from '@styles/designSystem';
+import FallbackThumbnail from './FallbackThumbnail';
 
 export const AccordionWrapper = styled.div`
   display: flex;
@@ -22,6 +23,11 @@ export const Poster = styled.div`
 `;
 
 export const MiniThumbnail = styled(Image)`
+  margin-left: 32px;
+  margin-right: 48px;
+`;
+
+export const MiniFallback = styled(FallbackThumbnail)`
   margin-left: 32px;
   margin-right: 48px;
 `;
@@ -87,6 +93,10 @@ export const AccordionContentWrapper = styled.div`
 `;
 
 export const BigThumbnail = styled(Image)`
+  margin-left: 34px;
+`;
+
+export const BigFallback = styled(FallbackThumbnail)`
   margin-left: 34px;
 `;
 

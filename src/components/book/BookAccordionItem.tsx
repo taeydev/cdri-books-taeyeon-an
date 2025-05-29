@@ -12,6 +12,7 @@ import {
   AccordionWrapper,
   ArrowImage,
   Author,
+  BigFallback,
   BigThumbnail,
   ButtonArea,
   ButtonWithArrow,
@@ -23,6 +24,7 @@ import {
   DetailBox,
   DisplayPrice,
   LikeIcon,
+  MiniFallback,
   MiniThumbnail,
   Poster,
   Price,
@@ -36,6 +38,7 @@ import {
 interface BookAccordionItemProps {
   book: Book;
   isWished: boolean;
+  onClickWish: () => void;
 }
 
 interface AccordionViewProps extends BookAccordionItemProps {
@@ -45,21 +48,31 @@ interface AccordionViewProps extends BookAccordionItemProps {
 /**
  * 접힌 상태 UI
  */
-const CollapsedView = ({ book, isWished, onToggle }: AccordionViewProps) => {
+const CollapsedView = ({
+  book,
+  isWished,
+  onClickWish,
+  onToggle,
+}: AccordionViewProps) => {
   return (
     <AccordionWrapper>
       <Poster>
-        <MiniThumbnail
-          src={book.thumbnail}
-          alt={'thumbnail'}
-          width={48}
-          height={68}
-        />
+        {book.thumbnail ? (
+          <MiniThumbnail
+            src={book.thumbnail}
+            alt={'thumbnail'}
+            width={48}
+            height={68}
+          />
+        ) : (
+          <MiniFallback width={48} height={68} />
+        )}
         <LikeIcon
           imgSrc={isWished ? likeFilledIcon : likeIcon}
           imgAlt={'like icon'}
           imgWidth={16}
           imgHeight={16}
+          onClick={onClickWish}
         />
       </Poster>
       <TitleArea>
@@ -69,7 +82,7 @@ const CollapsedView = ({ book, isWished, onToggle }: AccordionViewProps) => {
         </Author>
       </TitleArea>
       <Price variant={'title3'}>
-        {book.salePrice ? book.salePrice : book.price}원
+        {book.salePrice !== -1 ? book.salePrice : book.price}원
       </Price>
       <ButtonArea>
         <Button
@@ -92,22 +105,32 @@ const CollapsedView = ({ book, isWished, onToggle }: AccordionViewProps) => {
 /**
  * 펼쳐진 상태 UI
  */
-const ExpandedView = ({ book, isWished, onToggle }: AccordionViewProps) => {
+const ExpandedView = ({
+  book,
+  isWished,
+  onClickWish,
+  onToggle,
+}: AccordionViewProps) => {
   return (
     <AccordionContentWrapper>
       <Poster>
-        <BigThumbnail
-          src={book.thumbnail}
-          alt={'thumbnail'}
-          width={210}
-          height={280}
-        />
+        {book.thumbnail ? (
+          <BigThumbnail
+            src={book.thumbnail}
+            alt={'thumbnail'}
+            width={210}
+            height={280}
+          />
+        ) : (
+          <BigFallback width={210} height={280} />
+        )}
         <LikeIcon
           isBigThumbnail
           imgSrc={isWished ? likeFilledIcon : likeIcon}
           imgAlt={'like icon'}
           imgWidth={24}
           imgHeight={24}
+          onClick={onClickWish}
         />
       </Poster>
       <DetailArea>
@@ -134,13 +157,13 @@ const ExpandedView = ({ book, isWished, onToggle }: AccordionViewProps) => {
                 원가
               </Text>
               <StyledOriginPrice
-                isDiscounted={!!book.salePrice}
+                isDiscounted={book.salePrice !== -1}
                 variant={'title3'}
               >
                 {book.price}원
               </StyledOriginPrice>
             </DisplayPrice>
-            {book.salePrice && (
+            {book.salePrice !== -1 && (
               <DisplayPrice>
                 <Text variant={'small'} color={colors.text.tertiary}>
                   할인가
@@ -167,7 +190,11 @@ const ExpandedView = ({ book, isWished, onToggle }: AccordionViewProps) => {
 /**
  * 도서목록 아코디언 아이템 컴포넌트
  */
-const BookAccordionItem = ({ book, isWished }: BookAccordionItemProps) => {
+const BookAccordionItem = ({
+  book,
+  isWished,
+  onClickWish,
+}: BookAccordionItemProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggleOpen = () => setIsOpen((prev) => !prev);
@@ -175,9 +202,19 @@ const BookAccordionItem = ({ book, isWished }: BookAccordionItemProps) => {
   return (
     <>
       {!isOpen ? (
-        <CollapsedView book={book} isWished={isWished} onToggle={toggleOpen} />
+        <CollapsedView
+          book={book}
+          isWished={isWished}
+          onClickWish={onClickWish}
+          onToggle={toggleOpen}
+        />
       ) : (
-        <ExpandedView book={book} isWished={isWished} onToggle={toggleOpen} />
+        <ExpandedView
+          book={book}
+          isWished={isWished}
+          onClickWish={onClickWish}
+          onToggle={toggleOpen}
+        />
       )}
     </>
   );
