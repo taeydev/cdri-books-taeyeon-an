@@ -1,6 +1,6 @@
-import Image from '@components/common/Image';
-import ResultMessage from '@components/common/ResultMessage';
+import Image from '@components/common/Image/Image';
 import bookIcon from '@/assets/icons/ic_book.svg';
+import ResultMessage from './ResultMessage';
 
 interface NoResultProps {
   message: string;

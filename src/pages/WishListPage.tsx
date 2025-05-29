@@ -1,31 +1,17 @@
-import styled from '@emotion/styled';
-import Text from '@components/common/Text';
-import PageSection from '@layouts/PageSection';
-import { useWishlistStore } from '@store/useWishlistStore';
-import BookAccordionList from '@components/book/BookAccordionList';
-import { colors } from '@styles/designSystem';
-import NoResult from '@components/common/NoResult';
-import Paging from '@components/common/Paging';
 import { useState } from 'react';
-
-const PageContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  padding: 80px 0;
-`;
-
-const ContentWrapper = styled.div`
-  width: 960px;
-`;
-
-const InfoWrapper = styled.div`
-  display: flex;
-`;
-
-const StyledText = styled(Text)`
-  margin-right: 16px;
-`;
+import { colors } from '@styles/designSystem';
+import PageSection from '@layouts/PageSection';
+import Text from '@components/common/Text/Text';
+import BookAccordionList from '@components/book/BookAccordionList';
+import NoResult from '@components/common/ResultMessage/NoResult';
+import Paging from '@components/common/Paging/Paging';
+import { useWishlistStore } from '@store/useWishlistStore';
+import {
+  ContentWrapper,
+  InfoWrapper,
+  PageContainer,
+  StyledText,
+} from './Page.styles';
 
 /**
  * 내가 찜한 책 페이지

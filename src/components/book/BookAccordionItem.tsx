@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Button from '@components/common/Button';
-import Text from '@components/common/Text';
+import Button from '@components/common/Button/Button';
+import Text from '@components/common/Text/Text';
 import { colors } from '@styles/designSystem';
 import { useWishlistStore } from '@store/useWishlistStore';
 import type { Book } from 'models/Book';

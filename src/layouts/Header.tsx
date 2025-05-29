@@ -1,13 +1,6 @@
-import styled from '@emotion/styled';
-import Text from '@components/common/Text';
+import Text from '@components/common/Text/Text';
 import TabBar, { type Tab } from '@layouts/TabBar';
-
-const HeaderContainer = styled.div`
-  padding: 0 160px;
-  display: flex;
-  align-items: center;
-  height: 80px;
-`;
+import { HeaderContainer } from './Header.styles';
 
 /**
  * Tab 정보

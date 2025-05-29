@@ -42,14 +42,14 @@ export const buttonColorMap = {
     background-color: ${colors.primary};
     color: ${colors.white};
     &:hover {
-      background-color: #4077e0; // 기존보다 조금 더 어두운 블루
+      background-color: #4077e0;
     }
   `,
   secondary: css`
     background-color: ${colors.ui.surface};
     color: ${colors.text.secondary};
     &:hover {
-      background-color: #e6e8eb; // surface보다 약간 어두운 회색
+      background-color: #e6e8eb;
     }
   `,
   outline: css`
@@ -57,7 +57,7 @@ export const buttonColorMap = {
     color: ${colors.text.tertiary};
     border: 1px solid ${colors.text.tertiary};
     &:hover {
-      background-color: #f7f7f7; // 흰색보다 살짝 회색 느낌
+      background-color: #f7f7f7;
     }
   `,
 };

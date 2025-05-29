@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Image from '@components/common/Image';
+import Image from '@components/common/Image/Image';
 
 const StyledImageButton = styled.button`
   background: transparent;

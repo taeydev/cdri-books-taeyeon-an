@@ -1,18 +1,5 @@
-import styled from '@emotion/styled';
-import Text from '@components/common/Text';
 import { colors } from '@styles/designSystem';
-
-const CommonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 117px;
-`;
-
-const Message = styled(Text)`
-  margin-top: 24px;
-`;
+import { CommonContainer, Message } from './ResultMessage.styles';
 
 /**
  * 결과 메세지 컴포넌트

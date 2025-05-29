@@ -8,9 +8,46 @@
       rel="stylesheet"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <title>CERTICOS BOOKS</title>
+    <style>
+      body {
+        margin: 0;
+      }
+
+      #loading-screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #fff;
+        font-family: 'Noto Sans KR', 'sans-serif';
+        color: #353c49;
+      }
+
+      .loading {
+        font-size: 25px;
+        animation: swing 1s ease-in-out infinite;
+      }
+
+      @keyframes swing {
+        0% {
+          transform: rotate(0deg);
+        }
+        50% {
+          transform: rotate(-45deg); /* 왼쪽 45도 */
+        }
+        100% {
+          transform: rotate(0deg); /* 원래 상태로 */
+        }
+      }
+    </style>
   </head>
   <body>
+    <div id="loading-screen">
+      <div>책장 정리 중...&nbsp;</div>
+      <div class="loading">🧹</div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

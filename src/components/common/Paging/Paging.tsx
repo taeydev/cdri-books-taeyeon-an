@@ -1,9 +1,9 @@
 import React from 'react';
-import { Container, NavButton, PageButton } from './Paging.styles';
 import ChevronLeftIcon from '@components/icon/ChevronLeftIcon';
 import ChevronRightIcon from '@components/icon/ChevronRightIcon';
 import ChevronsLeftIcon from '@components/icon/ChevronsLeftIcon';
 import ChevronsRightIcon from '@components/icon/ChevronsRightIcon';
+import { Container, NavButton, PageButton } from './Paging.styles';
 
 interface PagingProps {
   currentPage: number;
@@ -38,7 +38,6 @@ const Paging = ({ currentPage, totalPages, onPageChange }: PagingProps) => {
       >
         <ChevronLeftIcon width={14} height={14} />
       </NavButton>
-
       {Array.from(
         { length: endPage - startPage + 1 },
         (_, i) => startPage + i
@@ -52,7 +51,6 @@ const Paging = ({ currentPage, totalPages, onPageChange }: PagingProps) => {
           {page}
         </PageButton>
       ))}
-
       <NavButton
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}

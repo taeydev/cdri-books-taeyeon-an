@@ -1,6 +1,6 @@
 import ErrorIcon from '@components/icon/ErrorIcon';
-import ResultMessage from '@components/common/ResultMessage';
 import { colors } from '@styles/designSystem';
+import ResultMessage from './ResultMessage';
 
 interface ErrorResultProps {
   message: string;

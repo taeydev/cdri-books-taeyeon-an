@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Image from '@components/common/Image';
+import Image from '@components/common/Image/Image';
 import searchIcon from '@/assets/icons/ic_search.svg';
-import SearchHistoryDropdown from '@components/common/SearchHistoryDropdown';
+import SearchHistoryDropdown from '@components/common/SearchBar/SearchHistoryDropdown';
 import { Input, SearchBarContainer, Wrapper } from './SearchBar.styles';
 
 interface SearchBarProps {

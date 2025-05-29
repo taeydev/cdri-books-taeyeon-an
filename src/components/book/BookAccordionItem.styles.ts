@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import Button from '@components/common/Button';
-import Text from '@components/common/Text';
-import Image from '@components/common/Image';
-import ImageButton from '@components/common/ImageButton';
+import Button from '@components/common/Button/Button';
+import Text from '@components/common/Text/Text';
+import Image from '@components/common/Image/Image';
+import ImageButton from '@components/common/Button/ImageButton';
 import { colors, typographyStyle } from '@styles/designSystem';
 import FallbackThumbnail from './FallbackThumbnail';
 

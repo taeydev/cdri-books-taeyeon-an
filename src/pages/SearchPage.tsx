@@ -1,51 +1,26 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import styled from '@emotion/styled';
-import Text from '@components/common/Text';
+import { colors } from '@styles/designSystem';
 import PageSection from '@layouts/PageSection';
-import SearchBar from '@components/common/SearchBar';
-import Button from '@components/common/Button';
+import Text from '@components/common/Text/Text';
+import SearchBar from '@components/common/SearchBar/SearchBar';
+import Button from '@components/common/Button/Button';
 import SearchModal, {
   type AdvancedFilters,
 } from '@components/search/SearchModal';
-import BookAccordionList from '@components/book/BookAccordionList';
-import { useBookSearch } from '@hooks/useBookSearch';
+
 import type { Target } from '@api/bookApi';
-import { colors } from '@styles/designSystem';
-import ErrorResult from '@components/common/ErrorResult';
-import NoResult from '@components/common/NoResult';
+import { useBookSearch } from '@hooks/useBookSearch';
 import { useSearchHistoryStore } from '@store/useSearchHistoryStore';
-import Paging from '@components/common/Paging';
-import BookAccordionSkeletonList from '@components/book/BookAccordionSkeletonList';
 
-const PageContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  padding: 80px 0;
-`;
-
-const ContentWrapper = styled.div`
-  width: 960px;
-`;
-
-const SearchArea = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-`;
-
-const AdvancedContainer = styled.div`
-  position: relative;
-  display: inline-block;
-`;
-
-const InfoWrapper = styled.div`
-  display: flex;
-`;
-
-const StyledText = styled(Text)`
-  margin-right: 16px;
-`;
+import {
+  AdvancedContainer,
+  ContentWrapper,
+  InfoWrapper,
+  PageContainer,
+  SearchArea,
+  StyledText,
+} from './Page.styles';
+import SearchResult from './SearchResult';
 
 /**
  * 도서 검색 페이지
@@ -54,8 +29,6 @@ const SearchPage = () => {
   const [searchWord, setSearchWord] = useState<string>('');
   const [query, setQuery] = useState<string>('');
   const [target, setTarget] = useState<Target | ''>('');
-
-  const containerRef = useRef<HTMLDivElement>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [advancedFilter, setAdvancedFilter] = useState<AdvancedFilters>({
     category: 'title',
@@ -65,7 +38,10 @@ const SearchPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState(0);
 
-  // query 상태가 바뀌면 useBookSearch 호출됨
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { history, addHistory, removeHistory } = useSearchHistoryStore();
+
   const { data, isLoading, error } = useBookSearch(
     query,
     currentPage,
@@ -79,11 +55,37 @@ const SearchPage = () => {
     }
   }, [data?.totalCount, query, target]);
 
-  const handleChangePage = useCallback((page: number) => {
-    setCurrentPage(page);
-  }, []);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        handleCloseModal();
+      }
+    };
 
-  const { history, addHistory, removeHistory } = useSearchHistoryStore();
+    if (openModal) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [openModal]);
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchWord(e.target.value);
+  };
+
+  const handleSearch = () => {
+    setCurrentPage(1);
+    setQuery(searchWord);
+    setTarget('');
+    addHistory(searchWord);
+  };
 
   const handleClickHistory = useCallback(
     (history: string) => {
@@ -93,16 +95,6 @@ const SearchPage = () => {
     },
     [addHistory]
   );
-
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchWord(e.target.value);
-  };
-
-  const handleSearch = () => {
-    setCurrentPage(1);
-    setQuery(searchWord);
-    addHistory(searchWord);
-  };
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -125,50 +117,9 @@ const SearchPage = () => {
     handleCloseModal();
   };
 
-  useEffect(() => {
-    // 바깥 영역 클릭 시 모달 꺼지도록
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        handleCloseModal();
-      }
-    };
-
-    if (openModal) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [openModal]);
-
-  const renderContent = useCallback(() => {
-    if (isLoading) return <BookAccordionSkeletonList count={10} />;
-    if (error)
-      return (
-        <ErrorResult
-          message={'문제가 발생했습니다. 잠시 후 다시 시도해주세요.'}
-        />
-      );
-
-    if (data && data.books.length > 0)
-      return (
-        <>
-          <BookAccordionList books={data.books} />
-          <Paging
-            currentPage={currentPage}
-            totalPages={Math.ceil((data?.totalCount ?? 0) / 10)}
-            onPageChange={handleChangePage}
-          />
-        </>
-      );
-    return <NoResult message="검색된 결과가 없습니다." />;
-  }, [isLoading, error, data, currentPage, handleChangePage]);
+  const handleChangePage = useCallback((page: number) => {
+    setCurrentPage(page);
+  }, []);
 
   return (
     <PageContainer>
@@ -217,7 +168,13 @@ const SearchPage = () => {
             <Text variant="caption">건</Text>
           </InfoWrapper>
         </PageSection>
-        {renderContent()}
+        <SearchResult
+          isLoading={isLoading}
+          error={error}
+          data={data}
+          currentPage={currentPage}
+          onChangePage={handleChangePage}
+        />
       </ContentWrapper>
     </PageContainer>
   );

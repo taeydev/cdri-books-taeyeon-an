@@ -1,12 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import Header from '@layouts/Header';
-import styled from '@emotion/styled';
-
-const LayoutWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
+import { LayoutWrapper } from './AppLayout.styles';
 
 /**
  * 공통 레이아웃 컴포넌트
