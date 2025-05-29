@@ -1,8 +1,8 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import Text from '@components/common/Text';
 import PageSection from '@layouts/PageSection';
 import SearchBar from '@components/common/SearchBar';
-import { useEffect, useRef, useState } from 'react';
 import Button from '@components/common/Button';
 import SearchModal, {
   type AdvancedFilters,
@@ -11,6 +11,7 @@ import BookAccordionList from '@components/book/BookAccordionList';
 import { useBookSearch } from '@hooks/useBookSearch';
 import type { Target } from '@api/bookApi';
 import { colors } from '@styles/designSystem';
+import ErrorResult from '@components/common/ErrorResult';
 import NoResult from '@components/common/NoResult';
 import { useSearchHistoryStore } from '@store/useSearchHistoryStore';
 import Paging from '@components/common/Paging';
@@ -78,17 +79,20 @@ const SearchPage = () => {
     }
   }, [data?.totalCount, query, target]);
 
-  const handleChangePage = (page: number) => {
+  const handleChangePage = useCallback((page: number) => {
     setCurrentPage(page);
-  };
+  }, []);
 
   const { history, addHistory, removeHistory } = useSearchHistoryStore();
 
-  const handleClickHistory = (history: string) => {
-    setSearchWord(history);
-    setQuery(history);
-    addHistory(history);
-  };
+  const handleClickHistory = useCallback(
+    (history: string) => {
+      setSearchWord(history);
+      setQuery(history);
+      addHistory(history);
+    },
+    [addHistory]
+  );
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchWord(e.target.value);
@@ -143,6 +147,29 @@ const SearchPage = () => {
     };
   }, [openModal]);
 
+  const renderContent = useCallback(() => {
+    if (isLoading) return <BookAccordionSkeletonList count={10} />;
+    if (error)
+      return (
+        <ErrorResult
+          message={'문제가 발생했습니다. 잠시 후 다시 시도해주세요.'}
+        />
+      );
+
+    if (data && data.books.length > 0)
+      return (
+        <>
+          <BookAccordionList books={data.books} />
+          <Paging
+            currentPage={currentPage}
+            totalPages={Math.ceil((data?.totalCount ?? 0) / 10)}
+            onPageChange={handleChangePage}
+          />
+        </>
+      );
+    return <NoResult message="검색된 결과가 없습니다." />;
+  }, [isLoading, error, data, currentPage, handleChangePage]);
+
   return (
     <PageContainer>
       <ContentWrapper>
@@ -190,20 +217,7 @@ const SearchPage = () => {
             <Text variant="caption">건</Text>
           </InfoWrapper>
         </PageSection>
-        {isLoading && <BookAccordionSkeletonList count={10} />}
-        {error && <p>에러 발생: {error.message}</p>}
-        {data && data.books.length > 0 ? (
-          <>
-            <BookAccordionList books={data.books} />
-            <Paging
-              currentPage={currentPage}
-              totalPages={Math.ceil((data?.totalCount ?? 0) / 10)}
-              onPageChange={handleChangePage}
-            />
-          </>
-        ) : (
-          <NoResult message={'검색된 결과가 없습니다.'} />
-        )}
+        {renderContent()}
       </ContentWrapper>
     </PageContainer>
   );

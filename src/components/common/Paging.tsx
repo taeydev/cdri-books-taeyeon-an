@@ -1,3 +1,4 @@
+import React from 'react';
 import { Container, NavButton, PageButton } from './Paging.styles';
 import ChevronLeftIcon from '@components/icon/ChevronLeftIcon';
 import ChevronRightIcon from '@components/icon/ChevronRightIcon';
@@ -68,4 +69,4 @@ const Paging = ({ currentPage, totalPages, onPageChange }: PagingProps) => {
   );
 };
 
-export default Paging;
+export default React.memo(Paging);

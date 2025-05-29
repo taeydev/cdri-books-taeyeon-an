@@ -1,8 +1,9 @@
+import React, { useState } from 'react';
 import Button from '@components/common/Button';
 import Text from '@components/common/Text';
 import { colors } from '@styles/designSystem';
+import { useWishlistStore } from '@store/useWishlistStore';
 import type { Book } from 'models/Book';
-import { useState } from 'react';
 import arrowUpIcon from '@/assets/icons/ic_arrow_up.svg';
 import arrowDownIcon from '@/assets/icons/ic_arrow_down.svg';
 import likeIcon from '@/assets/icons/ic_like.svg';
@@ -37,11 +38,11 @@ import {
 
 interface BookAccordionItemProps {
   book: Book;
-  isWished: boolean;
-  onClickWish: () => void;
+  onClickWish: (item: Book) => void;
 }
 
 interface AccordionViewProps extends BookAccordionItemProps {
+  isWished: boolean;
   onToggle: () => void;
 }
 
@@ -72,7 +73,7 @@ const CollapsedView = ({
           imgAlt={'like icon'}
           imgWidth={16}
           imgHeight={16}
-          onClick={onClickWish}
+          onClick={() => onClickWish(book)}
         />
       </Poster>
       <TitleArea>
@@ -130,7 +131,7 @@ const ExpandedView = ({
           imgAlt={'like icon'}
           imgWidth={24}
           imgHeight={24}
-          onClick={onClickWish}
+          onClick={() => onClickWish(book)}
         />
       </Poster>
       <DetailArea>
@@ -190,11 +191,9 @@ const ExpandedView = ({
 /**
  * 도서목록 아코디언 아이템 컴포넌트
  */
-const BookAccordionItem = ({
-  book,
-  isWished,
-  onClickWish,
-}: BookAccordionItemProps) => {
+const BookAccordionItem = ({ book, onClickWish }: BookAccordionItemProps) => {
+  const isWished = useWishlistStore((state) => state.isWished(book.isbn));
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggleOpen = () => setIsOpen((prev) => !prev);
@@ -220,4 +219,4 @@ const BookAccordionItem = ({
   );
 };
 
-export default BookAccordionItem;
+export default React.memo(BookAccordionItem);

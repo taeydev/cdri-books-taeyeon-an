@@ -1,15 +1,8 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from '@components/common/Image';
-import deleteIcon from '@/assets/icons/ic_delete.svg';
 import searchIcon from '@/assets/icons/ic_search.svg';
-import { useEffect, useRef, useState } from 'react';
-import {
-  Dropdown,
-  DropdownItem,
-  Input,
-  SearchBarContainer,
-  Wrapper,
-} from './SearchBar.styles';
-import ImageButton from './ImageButton';
+import SearchHistoryDropdown from '@components/common/SearchHistoryDropdown';
+import { Input, SearchBarContainer, Wrapper } from './SearchBar.styles';
 
 interface SearchBarProps {
   value: string;
@@ -47,6 +40,14 @@ export const SearchBar = ({
     }
   };
 
+  const handleClickHistory = useCallback(
+    (item: string) => {
+      onClickHistory?.(item);
+      setIsFocused(false);
+    },
+    [onClickHistory]
+  );
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -74,29 +75,16 @@ export const SearchBar = ({
           placeholder={placeholder}
         />
       </SearchBarContainer>
-      {isFocused && searchHistory.length > 0 && (
-        <Dropdown>
-          {searchHistory.map((item) => (
-            <DropdownItem key={item}>
-              <span
-                onClick={() => {
-                  onClickHistory?.(item);
-                  setIsFocused(false);
-                }}
-              >
-                {item}
-              </span>
-              <ImageButton
-                imgSrc={deleteIcon}
-                imgAlt={'delete icon'}
-                imgWidth={24}
-                imgHeight={24}
-                onClick={() => onDeleteHistory?.(item)}
-              />
-            </DropdownItem>
-          ))}
-        </Dropdown>
-      )}
+      {isFocused &&
+        searchHistory?.length > 0 &&
+        onClickHistory &&
+        onDeleteHistory && (
+          <SearchHistoryDropdown
+            searchHistory={searchHistory}
+            onClickHistory={handleClickHistory}
+            onDeleteHistory={onDeleteHistory}
+          />
+        )}
     </Wrapper>
   );
 };
